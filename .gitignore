@@ -1,0 +1,17 @@
+# Compiled binary
+carepulse
+*.exe
+*.o
+
+# Runtime-generated data files (created automatically on first run)
+beds_status.txt
+patient_records.txt
+
+# Code::Blocks project junk
+*.depend
+*.layout
+obj/
+bin/
+
+# OS junk
+.DS_Store
