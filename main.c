@@ -42,7 +42,7 @@ int main (void)
             case 3: displayBedStatus(); break;
             case 4: registerPatient(); break;
             case 5: viewPatientByPriority(); break;
-            case 6: viewPatientInformation(); break;
+            case 6:sortPatientsByPriority(); break;
             case 7: printf("\n(Needs saved records to work across runs - Requirement 7)\n"); break;
             case 8: printf("\n(Reports come later - Requirement 6)\n"); break;
             case 0: printf("\nExiting. Goodbye!\n"); break;
@@ -164,3 +164,72 @@ void generateBill(int patientIndex)
 
 }
 
+void sortPatientsByPriority(void)
+{
+    if (patientCount <=1){
+        printf("\nNot enough patients to sort. \n");
+        return;
+    }
+     //Boubble sort - only swap when urgency is higher
+    for (int i=0; i<patientCount-1; i++){
+        for (int j=0; j <patientCount -i-1; j++){
+           //swap only if the next patient has higher urgency
+            if (patientTriageLevel[j]<patientTriageLevel[j+1]){
+                //swap all patient parallel array
+
+                // Name
+                char tempName[50];
+                strcpy(tempName,patientName[j]);
+                strcpy(patientName[j],patientName[j+1]);
+                strcpy(patientName[j+1], tempName);
+                //Age
+                int tempAge =patientAge[j];
+                patientAge[j]= patientAge[j+1];
+                patientAge[j+1]=tempAge;
+                //urgency
+                int tempUrgency=patientTriageLevel[j];
+                patientTriageLevel[j]=patientTriageLevel[j+1];
+                patientTriageLevel[j+1]=tempUrgency;
+                //specialty
+                int tempSpec=patientSpecialty[j];
+                patientSpecialty[j]=patientSpecialty[j+1];
+                patientSpecialty[j+1]=tempSpec;
+                //Admitted flag
+                int tempAdmitted=patientAdmitted[j];
+                patientAdmitted[j]=patientAdmitted[j+1];
+                patientAdmitted[j+1]=tempAdmitted;
+                //Ward
+                int tempWard=patientWard[j];
+                patientWard[j]=patientWard[j+1];
+                patientWard[j+1]=tempWard;
+                //Days admitted
+                int tempDays=patientDaysAdmitted[j];
+                patientDaysAdmitted[j]=patientDaysAdmitted[j+1];
+                patientDaysAdmitted[j+1]=tempDays;
+                //Bed number
+                int tempBed= patientBedNumber[j];
+                patientBedNumber[j]=patientBedNumber[j+1];
+                patientBedNumber[j+1]=tempBed;
+                //diagnosis
+                char tempDiag[100];
+                strcpy(tempDiag,patientDiagnosis[j]);
+                strcpy(patientDiagnosis[j],patientDiagnosis[j+1]);
+                strcpy(patientDiagnosis[j+1],tempDiag);
+                //condition
+                char tempCond[30];
+                strcpy(tempCond, patientCondition[j]);
+                strcpy(patientCondition[j],patientCondition[j+1]);
+                strcpy(patientCondition[j+1],tempCond);
+
+
+
+           }
+        }
+    }
+    printf("\n=========Patients Sorted by Priority (Critical -> Urgent -> Normal =========\n)");
+    for (int i=0 ; i<patientCount ;i++){
+        printf("%d. %-20s|Urgency :%d | Specialty : %s\n", i+1,patientName[i],patientTriageLevel[i],specialtyName[patientSpecialty[i]]);
+        
+    }
+    printf("==================================================================================\n");
+} 
