@@ -44,7 +44,7 @@ int main (void)
             case 5: viewPatientByPriority(); break;
             case 6:sortPatientsByPriority(); break;
             case 7: printf("\n(Needs saved records to work across runs - Requirement 7)\n"); break;
-            case 8: printf("\n(Reports come later - Requirement 6)\n"); break;
+            case 8: displayReports(); break;
             case 0: printf("\nExiting. Goodbye!\n"); break;
             default: printf("\nInvalid choice, try again.\n");
         }
@@ -233,3 +233,93 @@ void sortPatientsByPriority(void)
     }
     printf("==================================================================================\n");
 } 
+
+
+void displayReports(void)
+{
+    if (patientCount == 0){
+        printf("\nNo patients registered yet. Cannot genarate report.\n");
+        return;
+    }
+    //1. patient by urgency level
+    int normal=0,urgency=0,critical=0;
+
+    for (int i=0 ; i<patientCount ; i++){
+        if (patientTriageLvel[i]==1) normal++;
+        else if(pateintTriageLevel[i]==2) urgency++;
+        else if (patientTriageLevel[i]==3) critical++; 
+    }
+    printf("\n==================== PERFORMANCE REPORTS ====================\n");
+    printf(" 1.Patient by urgency level\n");
+    printf("   Total patients Registerd : %d\n", patientCount);
+    printf("   - Normal   (Level 1) : %d\n", normal);
+    printf("   - Ugent    (Level 2) : %d\n ", urgent);
+    prinntf("  - Critical (Level 3) : %d\n", critical);
+
+    //2. Total revenue and Total discount
+    double totalRevenue =0.0;
+    double totalDiscount =0.0;
+
+    for (int i =0; i<patientCount; i++){
+        double base = baseFee[patientSpecialty[i]];
+        double surcharge = calculateSurcharge(patientTriageLevel[i], base);
+        double wardCost = calculateWardCost(patientDaysAdmitted[i], patientWard[i]);
+        double gross = base + surcharge + wardCost;
+
+        double discount =0.0;
+        if (patientAge[i]<5 || patientAge[i] >65){
+             dicount = gross * 0.15;
+            }
+            toatalRevenue += (gross - discount);
+            toatalDiscount += discount;
+    }
+
+    printf("\n 2. Financial Summery\n");
+    printf("    Toatal Revenue Earned     : LKR %d.2f\n ", totalRevenue);
+    printf("    Total Discount Granted    : LKR %d.2f\n", totalDiscount);
+
+    //3. Bed occupancy percentage per ward
+
+    printf("\n 3. Bed Occupancy per Ward\n");
+    for (int w=0; w<NUM_WARDS; w++){
+        int occupied = 0;
+        for (int b=0 ; b< wardBedCapacity[w]; b++){
+            if (bedOccupancy[w][b]==1)
+              occupied++;
+        }
+        double percentage =0.0;
+        if (wardBedCapacity[w]>0){
+          percentage = (occupied * 100.0)/ wardBedCapacity[w];
+        }
+        printf("   %-25s : %2d / %2d beds occupied (%.1f%%)\n",waradName[w],occupied,wardBedCapacity[w],percentage);
+    }
+    //4.Highest paying patient
+
+    int highestInadex = 0;
+    double highestBill = 0.0;
+    
+    for (int i =0 ;i <patientCount;i++){
+        double base = baseFee[patientSpecialty[i]];
+        double surcharge =calculateSurcharge(patientTriageLevel[i], base);
+        double wardCost= calculateWarCost(patientDaysAdmitted[i],patientWard[i]);
+        double gross = base + surcharge + wardCost;
+
+        double discount = 0.0;
+        if (patientAge[i] <5 || patientAge [i] > 65)
+          discount = gross *0.15; 
+        
+
+        double finalBill = gross - discount;
+
+        if (finalBill > highestBill){
+            highestBill = finalBill;
+            highestIndex = i;
+        }
+    }
+    printf("\n 4. Highest Paying Patient\n");
+    printf("  Name : %s\n", patientName[highestIndex] );
+    printf("  Bill : LKR %.2f\n", highestBill);
+
+    printf("=============================================================\n");
+}   
+
