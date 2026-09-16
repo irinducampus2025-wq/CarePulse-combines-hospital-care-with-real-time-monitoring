@@ -2,19 +2,53 @@
 #include <string.h>
 #include <stdlib.h>
 
-#define NUM_SPECIALITIES 4
+#define NUM_SPECIALTIES 4
 #define MAX_BEDS         20
 #define MAX_PATIENTS     100
 #define NUM_WARDS        4
+// Doctor specialty lookup table
+const char specialtyName[NUM_SPECIALTIES][30]={"General Practice (OPD)","Paediatrics","Cardiology","Neurology"};
+const double baseFee[NUM_SPECIALTIES]         ={1500.00, 2500.00, 4500.00, 5000.00};
+const int consultMinutes[NUM_SPECIALTIES]     ={15, 20, 30, 30};
+const int dailyCap[NUM_SPECIALTIES]           ={30, 20, 12, 10};
 
+//Running queue count per specialty
+int queueCount[NUM_SPECIALTIES] = {0, 0, 0, 0};
+
+//Hospital ward lookup tables
+const char wardName[NUM_WARDS][30]={"General ward", "Paediatric Ward", "Surgical ward", "ICU (Intensive Care Unit)"};
+const double wardDailyRate[NUM_WARDS]={3000.00, 6000.00, 12000.00, 25000.00};
+const int wardBedCapacity[NUM_WARDS] = {20, 10, 10, 5};
+
+//Bed occupancy matrix
+int bedOccupancy[NUM_WARDS][MAX_BEDS];
+
+//patient parallel array
+char patientName[MAX_PATIENTS][50];
+int patientAge[MAX_PATIENTS];
+int patientTriageLevel[MAX_PATIENTS];
+int patientSpecialty[MAX_PATIENTS];
+int patientAdmitted[MAX_PATIENTS];
+int patientWard[MAX_PATIENTS];
+int patientDaysAdmitted[MAX_PATIENTS];
+int patientBedNumber[MAX_PATIENTS];
+char patientDiagnosis[MAX_PATIENTS][100];
+char patientCondition[MAX_PATIENTS][30];
+int patientCount=0;
+
+
+// function prototypes
 double calculateWaitTime(int specialtyIndex);
 double calculateSurcharge(int triageLevel, double fee);
 double calculateWardCost(int daysAdmitted,int wardIndex);
 void generateBill(int patientIndex);
+void sortPatientsByPriority(void);
+void displayReports(void);
 
 int main (void)
 {
 
+    initializeBedOccupancy();
     int choice;
 
     do {
@@ -43,7 +77,7 @@ int main (void)
             case 4: registerPatient(); break;
             case 5: viewPatientByPriority(); break;
             case 6:sortPatientsByPriority(); break;
-            case 7: printf("\n(Needs saved records to work across runs - Requirement 7)\n"); break;
+            case 7: printf("\nPatient history needs file handling (Bonus - skipped).\n"); break;
             case 8: displayReports(); break;
             case 0: printf("\nExiting. Goodbye!\n"); break;
             default: printf("\nInvalid choice, try again.\n");
@@ -326,3 +360,21 @@ void displayReports(void)
     printf("=============================================================\n");
 }   
 
+void initializeBedOccupancy(void)
+{
+    for (int ward =0; ward <NUM_WARDS; ward++){
+        for (int bed = 0; bed<MAX_BEDS; bed++){
+            bedOccupancy[ward][bed]=0;
+        }
+    }
+
+}
+
+void displaySpecialties(void)
+{
+    printf("\n%-4s %-25s %-10s %-8s\n", "ID", "Specialty", "Fee (LKR)", "Time/Pt", "Cap" );
+    for (int i=0;i<NUM_SPECIALTIES;i++){
+        printf("%-4d %-25s %-12.2f %-10d %-8d\n",i+1, specialtyName[i],baseFee[i], consultMinutes[i], dailyCap[i]);
+    }
+
+}
