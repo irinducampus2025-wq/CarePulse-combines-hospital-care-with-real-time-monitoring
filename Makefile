@@ -1,16 +1,15 @@
-# CarePulse — Smart Hospital Patient & Resource Allocation System
-# Run "make" to build, "make clean" to remove build output.
+# CarePulse build file
+# just type "make" to compile, "make clean" to wipe the binary
 
 CC = gcc
-CFLAGS = -Wall -Wextra -std=c99 -Iinclude
-LDFLAGS = -lm
-SRC = $(wildcard src/*.c)
+CFLAGS = -Wall -Wextra -std=c99
+SRC = main.c
 TARGET = carepulse
 
 $(TARGET): $(SRC)
-	$(CC) $(CFLAGS) $(SRC) -o $(TARGET) $(LDFLAGS)
+	$(CC) $(CFLAGS) $(SRC) -o $(TARGET)
 
 clean:
-	rm -f $(TARGET) beds_status.txt patient_records.txt
+	rm -f $(TARGET) $(TARGET).exe
 
 .PHONY: clean
