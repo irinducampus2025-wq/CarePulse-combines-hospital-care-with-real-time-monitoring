@@ -1,83 +1,58 @@
 # CarePulse
 
-**Combining hospital care with real-time monitoring** — a Smart Hospital
-Patient & Resource Allocation System.
-
-CSC 1012 – Introduction to Computer Programming (Individual Assignment)
+Smart Hospital Patient & Resource Allocation System  
+CSC 1012 – Introduction to Computer Programming (Individual Assignment)  
 University of Sri Jayewardenepura – Faculty of Applied Sciences
 
-A modular, menu-driven C program that simulates patient intake, bed
-allocation, emergency triage sorting, and medical billing, built with
-parallel arrays (no structs).
+Simple menu-driven C program that handles patient registration, bed allocation, triage sorting and billing. Everything is done with parallel arrays (no structs) as required.
 
-## Project layout
+## Files
 
 ```
 CarePulse/
-├── include/            Header files (one per module)
-│   ├── constants.h      Fixed sizes/limits
-│   ├── globals.h        Shared lookup tables & parallel arrays (extern)
-│   ├── utils.h           Safe input + currency formatting helpers
-│   ├── billing.h         Requirement 3 formulas
-│   ├── ward.h            Bed occupancy matrix + lookup tables display
-│   ├── patient.h         Registration flow + bill printout
-│   ├── sorting.h         Requirement 4 priority queue
-│   ├── reports.h         Requirement 6 analytics
-│   └── fileio.h          Requirement 7 file persistence
-├── src/                 Matching .c files, plus main.c (menu loop)
-├── Makefile             Build with `make`
+├── main.c          all the code lives here
+├── Makefile
 ├── .gitignore
 └── README.md
 ```
 
-## How to build and run
+Single file for now. No headers, no fancy folder structure.
 
-**Using the terminal (Linux/macOS/WSL, or MinGW on Windows):**
+## What the program does
+
+- `initializeBedOccupancy` – sets the 4x20 bed matrix to empty
+- `displaySpecialties`, `displayWards`, `displayBedStatus` – show the lookup tables
+- `findFreeBed` – looks for the first free bed in a ward
+- `registerPatient` – takes name, age, triage level, specialty, ward and days
+- `calculateWaitTime`, `calculateSurcharge`, `calculateWardCost` – the three cost formulas
+- `generateBill` – prints the bill for one patient
+- `sortPatientsByPriority` – bubble sort (Critical → Urgent → Normal), keeps registration order for same priority
+- `viewPatientInformation`, `viewAllPatients`, `showWardStatus` – basic lookup screens
+- `displayReports` – shows urgency counts, total revenue, discounts, bed occupancy %, highest paying patient
+
+## How to run
+
+Terminal (Linux / mac / WSL / MinGW):
 ```
 make
 ./carepulse
 ```
 
-**Using Code::Blocks:**
-1. Create a new empty C project.
-2. Add every file in `src/` as a source file, and every file in `include/`
-   as a header file.
-3. In *Project → Build Options → Search directories → Compiler*, add the
-   `include` folder so `#include "globals.h"` etc. resolve correctly.
-4. Build and run as usual (F9).
+Code::Blocks (for the final zip submission):
+1. New empty C project
+2. Add main.c
+3. Build & run (F9)
 
-On exit (menu option 6), the program writes `beds_status.txt` so bed
-occupancy is remembered the next time you run it. Every completed
-registration is also appended to `patient_records.txt` as a permanent
-log — delete both files if you want to start completely fresh.
+## Notes
 
-## Design notes
+- Parallel arrays only – every field is its own array indexed by the same patient number.
+- The sort is stable. It only swaps when one patient has strictly higher urgency, so same-priority patients stay in the order they were registered.
+- Requirement 7 (saving beds_status.txt and patient_records.txt) is still missing.
+- Money prints as 56750.00 instead of 56,750.00 because printf doesn’t do thousand separators by itself. Would need a small helper if the sample output has to match exactly.
 
-- **No structs** — every patient field lives in its own array in
-  `globals.c` (e.g. `patientName[i]`, `patientAge[i]`, ...), all indexed
-  by the same patient index `i`, per the assignment's parallel-array
-  guidance.
-- **Requirement 4 sort** is a *stable* Bubble Sort: it only swaps two
-  patients when one's urgency is strictly higher, so patients with the
-  same urgency level keep their original registration order — that's
-  the "secondary priority" rule satisfied for free.
-- **Currency formatting** (`utils.c: formatCurrency`) exists because
-  standard C has no built-in thousands-separator support; it manually
-  inserts commas so bills print as `56,750.00` like the spec's sample
-  output.
+## Still left to do
 
-## What's still up to you
-
-This scaffold implements every functional requirement, but the
-assignment also asks you to:
-- Write the **Project Report** in your own words (architecture,
-  assumptions, your GitHub URL) — see `docs/Project_Report_Template.md`
-  in the outer submission package for a starting structure.
-- Push this to your **own GitHub repository** with at least 15
-  meaningful commits spread over the project timeline — see
-  `docs/GitHub_Instructions.md` for exact commands.
-- Read through every function, make sure you understand it, and adjust
-  naming/comments/style until it genuinely reflects how *you'd* write
-  it. Your module handout is explicit that submitting unedited
-  AI-generated code is not allowed — treat this as a working reference
-  to learn from and build on, not a final answer to hand in as-is.
+- Write the project report in your own words (architecture, assumptions, GitHub link).
+- Push to your own GitHub repo with at least 15 proper commits over time.
+- Decide if you want to try the file-handling bonus.
+- Make sure you actually understand every function – the handout is clear that pure AI code isn’t allowed.
