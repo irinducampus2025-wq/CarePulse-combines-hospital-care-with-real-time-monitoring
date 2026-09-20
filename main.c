@@ -425,7 +425,7 @@ void registerPatient(void)
         return;
     }
     int i = patientCount;
-    printf("\n----- New patient Registration -----");
+    printf("\n----- New patient Registration -----\n");
 
     printf("patient name : ");
     scanf(" %49[^\n]", patientName[i]);
