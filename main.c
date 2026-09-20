@@ -137,23 +137,23 @@ void generateBill(int patientIndex)
    printf("\n==========================================================\n");
    printf("        SMART HOSPITAL ADMISSION AND BILL \n");
    printf("==========================================================\n");
-   printf("     patient ID    : PAT - %04d\n", 1001 + i);
-   printf("     patient Name  : %s\n", patientName[i]);
-   printf("     patient Age   : %d Years\n", patientAge[i]);
+   printf("     patient ID     : PAT - %04d\n", 1001 + i);
+   printf("     patient Name   : %s\n", patientName[i]);
+   printf("     patient Age    : %d Years\n", patientAge[i]);
    if (discount > 0)
          printf("   (15%% Subsidy Eligible)\n");
    
-   printf("     Specialty     : %s\n", specialtyName[patientSpecialty[i]]);
+   printf("     Specialty      : %s\n", specialtyName[patientSpecialty[i]]);
 
    if (patientAdmitted[i]&& patientBedNumber[i]>=0){
-    printf("     Assigned Ward : %s (Bed #%02d)\n",
+    printf("     Assigned Ward  : %s (Bed #%02d)\n",
            wardName[patientWard[i]], patientBedNumber[i]+1);
     }
    else {
-    printf("    Assigned Ward  : Not Admitted (OPD)\n");
+    printf("    Assigned Ward   : Not Admitted (OPD)\n");
    }
    
-   printf("     Urgency Level : Level %d  ", patientTriageLevel[i]);
+   printf("     Urgency Level  : Level %d  ", patientTriageLevel[i]);
    if (patientTriageLevel[i] == 1){
        printf("(Normal)\n");
    }
@@ -178,10 +178,10 @@ void generateBill(int patientIndex)
    }
    printf("\n");
    if (patientDaysAdmitted[i]>0){
-    printf("Ward Stay cost (%d Days) : LKR %10.2f\n" , patientDaysAdmitted[i], wardCost);
+    printf("Ward Stay cost (%d Days)   : LKR %10.2f\n" , patientDaysAdmitted[i], wardCost);
    }
    else{
-    printf("Ward Stay Cost           : LKR %10.2f\n", wardCost);
+    printf("Ward Stay Cost             : LKR %10.2f\n", wardCost);
    }
 
    printf("==========================================================\n");
@@ -556,7 +556,7 @@ void viewAllPatients (void)
         printf("Condition       :%s\n", patientCondition[i]);
 
         if (patientAdmitted[i] &&patientBedNumber[i]>=0){
-        printf("Ward            : %s (BED #%02d)\n", wardName[patientWard[i]],patientBedNumber[i]+1);
+        printf("Ward            :%s (BED #%02d)\n", wardName[patientWard[i]],patientBedNumber[i]+1);
         printf("Days admitted   :%d\n", patientDaysAdmitted[i]);
 
         }else {

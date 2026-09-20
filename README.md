@@ -10,7 +10,7 @@ Simple menu-driven C program that handles patient registration, bed allocation, 
 
 ```
 CarePulse/
-├── main.c          all the code lives here
+├── main.c            all the code lives here
 ├── Makefile
 ├── .gitignore
 └── README.md
